@@ -44,21 +44,16 @@ public class Customer {
 //Provides the Statement as an HTML String
   public String htmlStatement() {
 	    
-	  double totalAmount = 0;
 	    
-	    int frequentRenterPoints = 0;
 	    
 	    String result = "<h1>Rental Record for " + getName() + "<h1><br/>";
-	    
-	    for (Rental each : rentals) {
-	    	 double thisAmount1 = each.amountFor();
-	    		double thisAmount = thisAmount1;
-	    	      frequentRenterPoints = each.frequentRentalPoints(frequentRenterPoints);
-
-	    	      //show figures for this rental
-	    	      result += "\t" + each.getMovie().getTitle() + "\t" +
-	    	          String.valueOf(thisAmount) + "\n";
-	    	      totalAmount += thisAmount;
+		double totalAmount = totalAmount();
+	    int frequentRenterPoints = freeRentalPoints();
+    	for (Rental each : rentals) {
+	
+    		//show figures for this rental
+    		result += "\t" + each.getMovie().getTitle() + "\t" +
+		     String.valueOf(each.amountFor()) + "\n";
 
 	    }
 
@@ -69,5 +64,21 @@ public class Customer {
 	    
 	    return result;	
   }
+
+private int freeRentalPoints() {
+	int frequentRenterPoints = 0;
+	for (Rental each : rentals) {
+		frequentRenterPoints = each.frequentRentalPoints(frequentRenterPoints);
+	}
+	return frequentRenterPoints;
+}
+
+private double totalAmount() {
+	double totalAmount = 0;
+	for (Rental each : rentals) {
+	    totalAmount += each.amountFor();
+	}
+	return totalAmount;
+}
 }
 

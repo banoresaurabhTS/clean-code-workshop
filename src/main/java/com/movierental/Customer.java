@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Customer {
   private String name;
-  private List<Rental> rentals = new ArrayList<>();
+  private Rentals rentals = new Rentals();
 
   public Customer(String name) {
     this.name = name;
@@ -20,15 +20,15 @@ public class Customer {
   }
 
   public String statement() {
-	 	return new TextStatement().display();
+	 	return new TextStatement().display(this.getName(), this.rentals);
   }
 
   
 //Provides the Statement as an HTML String
   public String htmlStatement() {
 	    String result = "<h1>Rental Record for " + getName() + "<h1><br/>";
-		double totalAmount = totalAmount();
-	    int frequentRenterPoints = freeRentalPoints();
+		double totalAmount = rentals.totalAmount();
+	    int frequentRenterPoints = rentals.freeRentalPoints();
     	for (Rental each : rentals) {
     		//show figures for this rental
     		result += "\t" + each.getMovie().getTitle() + "\t" +
@@ -42,27 +42,12 @@ public class Customer {
 	    return result;	
   }
 
-private int freeRentalPoints() {
-	int frequentRenterPoints = 0;
-	for (Rental each : rentals) {
-		frequentRenterPoints = each.frequentRentalPoints(frequentRenterPoints);
-	}
-	return frequentRenterPoints;
-}
-
-private double totalAmount() {
-	double totalAmount = 0;
-	for (Rental each : rentals) {
-	    totalAmount += each.amountFor();
-	}
-	return totalAmount;
-}
 
 private class TextStatement	{
-	public String display() {
+	public String display(String name, Rentals rentals) {
 		   String result = "Rental Record for " + getName() + "\n";
-			double totalAmount = totalAmount();
-		    int frequentRenterPoints = freeRentalPoints();
+			
+		   
 	  	
 		    for (Rental each : rentals) {
 	  		//show figures for this rental
@@ -71,8 +56,8 @@ private class TextStatement	{
 
 		    }
 		    //add footer lines result
-		    result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-		    result += "You earned" + String.valueOf(frequentRenterPoints)
+		    result += "Amount owed is " + String.valueOf(rentals.totalAmount()) + "\n";
+		    result += "You earned" + String.valueOf(rentals.freeRentalPoints())
 		        + " frequent renter points";
 		    return result;
 	}

@@ -20,22 +20,10 @@ public class Customer {
   }
 
   public String statement() {
-	    String result = "Rental Record for " + getName() + "\n";
-		double totalAmount = totalAmount();
-	    int frequentRenterPoints = freeRentalPoints();
-  	for (Rental each : rentals) {
-  		//show figures for this rental
-  		result += "\t" + each.getMovie().getTitle() + "\t" +
-		     String.valueOf(each.amountFor()) + "\n";
-
-	    }
-	    //add footer lines result
-	    result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-	    result += "You earned" + String.valueOf(frequentRenterPoints)
-	        + " frequent renter points";
-	    return result;	
+	 	return new TextStatement().display();
   }
 
+  
 //Provides the Statement as an HTML String
   public String htmlStatement() {
 	    String result = "<h1>Rental Record for " + getName() + "<h1><br/>";
@@ -68,6 +56,26 @@ private double totalAmount() {
 	    totalAmount += each.amountFor();
 	}
 	return totalAmount;
+}
+
+private class TextStatement	{
+	public String display() {
+		   String result = "Rental Record for " + getName() + "\n";
+			double totalAmount = totalAmount();
+		    int frequentRenterPoints = freeRentalPoints();
+	  	
+		    for (Rental each : rentals) {
+	  		//show figures for this rental
+		    	result += "\t" + each.getMovie().getTitle() + "\t" +
+			    String.valueOf(each.amountFor()) + "\n";
+
+		    }
+		    //add footer lines result
+		    result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
+		    result += "You earned" + String.valueOf(frequentRenterPoints)
+		        + " frequent renter points";
+		    return result;
+	}
 }
 }
 
